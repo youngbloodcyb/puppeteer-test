@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const PNG = require("pngjs").PNG;
 const pixelmatch = require("pixelmatch");
+// const subImageMatch = require("matches-subimage");
 
 let img1;
 let img2;
@@ -18,7 +19,7 @@ let img2;
                             fullPage: true 
                         });
 
-    await page.goto("https://www.vivint.com/ppc/brand", { waitUntil: "networkidle2 "});
+    await page.goto("https://www.vivint.com/ppc/security", { waitUntil: "networkidle2" });
 
     await page.screenshot({ path: "screenshot2.png",
                             type: "png",
