@@ -2,7 +2,6 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const PNG = require("pngjs").PNG;
 const pixelmatch = require("pixelmatch");
-// const subImageMatch = require("matches-subimage");
 
 let img1;
 let img2;
@@ -36,5 +35,4 @@ let img2;
     pixelmatch(img1.data, img2.data, diff.data, width, height, {threshold: 0.1});
 
     fs.writeFileSync('diff.png', PNG.sync.write(diff));
-    // console.log(diff);
 })(); 
