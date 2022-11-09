@@ -32,7 +32,8 @@ let img2;
     const {width, height} = img1;
     const diff = new PNG({width, height});
 
-    pixelmatch(img1.data, img2.data, diff.data, width, height, {threshold: 0.1});
+    pixelmatch(img1.data, img2.data, diff.data, width, height, {threshold: 0.1, diffMask: true});
 
     fs.writeFileSync('diff.png', PNG.sync.write(diff));
+    console.log(diff);
 })(); 
