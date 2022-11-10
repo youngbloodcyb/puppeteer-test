@@ -36,20 +36,21 @@ let img2;
         chromeFlags: ['--disable-mobile-emulation']
     }, config);
 
-    const json = report.report;
+    const json = await report.report;
+    const new_json = JSON.parse(json);
+    
     const lhScore = {
-        URL: json.requestedURL,
-        PERFORMANCE: json.categories.performance.score,
-        ACCESSIBILITY: json.categories.accessibility.score,
-        BEST_PRACTICES: json.categories.best-practices.score,
-        PWA: json.categories.pwa.score,
-        SEO: json.categories.seo.score
+        URL: new_json.requestedURL,
+        PERFORMANCE: new_json.categories.performance.score,
+        ACCESSIBILITY: new_json.categories.accessibility.score,
+        PWA: new_json.categories.pwa.score,
+        SEO: new_json.categories.seo.score
     }
 
-    console.log(`Lighthouse scores: ${report.lhr.score}`);
+    // console.log(`Lighthouse scores: ${report.lhr.score}`);
     
     console.log('Writing results...');
-    fs.writeFileSync('lighthouse-report.json', lhScore);
+    fs.writeFileSync('lighthouse-report.json', JSON.stringify(lhScore));
     // fs.writeFileSync('report.json', json);
 
     await browser.close();
