@@ -2,6 +2,9 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const PNG = require("pngjs").PNG;
 const pixelmatch = require("pixelmatch");
+const lighthouse = require("lighthouse");
+const config = require("lighthouse/lighthouse-core/config/lr-desktop-config.js");
+// const reportGenerator = require("lighthouse/lighthouse-core/report/report-generator");
 
 let img1;
 let img2;
@@ -24,6 +27,30 @@ let img2;
                             type: "png",
                             fullPage: true 
                         });
+
+    const report = await lighthouse(page.url(), {
+        port: (new URL(browser.wsEndpoint())).port,
+        output: 'json',
+        logLevel: 'info',
+        disableDeviceEmulation: true,
+        chromeFlags: ['--disable-mobile-emulation']
+    }, config);
+
+    const json = report.report;
+    const lhScore = {
+        URL: json.requestedURL,
+        PERFORMANCE: json.categories.performance.score,
+        ACCESSIBILITY: json.categories.accessibility.score,
+        BEST_PRACTICES: json.categories.best-practices.score,
+        PWA: json.categories.pwa.score,
+        SEO: json.categories.seo.score
+    }
+
+    console.log(`Lighthouse scores: ${report.lhr.score}`);
+    
+    console.log('Writing results...');
+    fs.writeFileSync('lighthouse-report.json', lhScore);
+    // fs.writeFileSync('report.json', json);
 
     await browser.close();
 
